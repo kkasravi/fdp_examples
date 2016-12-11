@@ -1,0 +1,32 @@
+version: '2'
+services:
+  kafka:
+   image: harisekhon/kafka:2.11_0.10
+   ports:
+     - "9092:9092"
+  hadoop:
+   image: harisekhon/hadoop:2.7
+   ports:
+     - "8020:8020"
+     - "8042:8042"
+     - "8088:8088"
+     - "9000:9000"
+     - "10020:10020"
+     - "19888:19888"
+     - "50010:50010"
+     - "50020:50020"
+     - "50070:50070"
+     - "50075:50075"
+     - "50090:50090"
+flinkmaster:
+   image: bde2020/flink-master:latest
+   hostname: flink-master
+   environment:
+     - INIT_DAEMON_STEP=setup_flink
+flinkworker:
+   image: bde2020/flink-worker:latest
+   hostname: flink-worker
+   links:
+     - "flinkmaster:flink-master"
+    ports:
+     - "8081:8081"
